@@ -56,16 +56,21 @@
 <% if @issues.empty? %>
 <p class="nodata"><%= l(:label_no_data) %></p>
 <% else %>
+<p>
+<%= "Estimated Hours: " %>
+<%= @issues.map{|x|x.estimated_hours}.delete_if{|x|!x}.inject{|sum,x|sum+x} %>
+<br>
+<%= "Estimated Days (8hrs/day): " %>
+<%= @issues.map{|x|x.estimated_hours}.delete_if{|x|!x}.inject{|sum,x|sum+x}/8.0 %>
+</p>
 <%= render :partial => 'issues/list', :locals => {:issues => @issues, :query => @query} %>
 <p class="pagination"><%= pagination_links_full @issue_pages, @issue_count %></p>
 <% end %>
-
 <% other_formats_links do |f| %>
   <%= f.link_to 'Atom', :url => params.merge(:key => User.current.rss_key) %>
   <%= f.link_to 'CSV', :url => params, :onclick => "showModal('csv-export-options', '330px'); return false;" %>
   <%= f.link_to 'PDF', :url => params %>
 <% end %>
-
 <div id="csv-export-options" style="display:none;">
   <h3 class="title"><%= l(:label_export_options, :export_format => 'CSV') %></h3>
   <%= form_tag(params.merge({:format => 'csv',:page=>nil}), :method => :get, :id => 'csv-export-form') do %>
