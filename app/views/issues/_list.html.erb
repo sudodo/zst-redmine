@@ -31,7 +31,10 @@
         | total: <%= grouped_estimated_hours[group].to_s %> hours
         <% if group.try(:effective_date) %>
           | target: <%= group.try(:effective_date) %>
-          | <%= (group.effective_date - Date.today).to_i %> days left
+          <% left_date = (group.effective_date - Date.today).to_i %>
+          <% left_date_color = (left_date < 4) ? "red": (left_date < 10) ? "blue" : "black" %>
+<% left_or_delay_str = (left_date < 0) ? "delay!!!": "left" %>
+          | <font color=<%= left_date_color %>><%= left_date.try(:abs) %> days <%= left_or_delay_str %>
         <% end %>
         <%= link_to_function("#{l(:button_collapse_all)}/#{l(:button_expand_all)}", "toggleAllRowGroups(this)", :class => 'toggle-all') %>
       </td>
