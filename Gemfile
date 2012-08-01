@@ -70,6 +70,7 @@ end
 group :development do
   gem "rdoc", ">= 2.4.2"
   gem "yard"
+  gem "ruby-debug19"
 end
 
 group :test do
