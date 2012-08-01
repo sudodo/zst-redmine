@@ -29,7 +29,10 @@
         <span class="expander" onclick="toggleRowGroup(this);">&nbsp;</span>
         <%= group.blank? ? 'None' : column_content(@query.group_by_column, issue) %> <span class="count">(<%= @issue_count_by_group[group] %>)</span>
         | total: <%= grouped_estimated_hours[group].to_s %> hours
-        | target: <%= group.try(:effective_date) %>
+        <% if group.try(:effective_date) %>
+          | target: <%= group.try(:effective_date) %>
+          | <%= (group.effective_date - Date.today).to_i %> days left
+        <% end %>
         <%= link_to_function("#{l(:button_collapse_all)}/#{l(:button_expand_all)}", "toggleAllRowGroups(this)", :class => 'toggle-all') %>
       </td>
     </tr>
